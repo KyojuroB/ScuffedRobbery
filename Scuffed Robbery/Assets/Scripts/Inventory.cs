@@ -13,7 +13,8 @@ public class Inventory : MonoBehaviour
 
     [Header("Alll Lists")]
     [SerializeField] List<GameObject> actualSlots;
-    [SerializeField] List<GameObject> itemsobj;
+    [SerializeField] List<Sprite> itemPic;
+    [SerializeField] List<Image> itemPicInSlot;
     [SerializeField] List<int> objInInv;
     // Start is called before the first frame update
     void Start()
@@ -22,6 +23,10 @@ public class Inventory : MonoBehaviour
         {
             actualSlots.Add(inventoryGroup.transform.GetChild(i).gameObject);
             objInInv.Add(0);
+        }
+        for (int i = 0; i < actualSlots.Count; i++)
+        {
+            actualSlots[i].transform.GetChild(0).GetComponent<Image>();
         }
     }
 
@@ -32,6 +37,7 @@ public class Inventory : MonoBehaviour
             if (objInInv[i] ==objIndex)
             {
                 Debug.Log("we got it");
+               
                 return true;
             }
         }
@@ -62,6 +68,7 @@ public class Inventory : MonoBehaviour
             if (objInInv[i] == 0)
             {
                 objInInv[i] = indexCode;
+                //itemPicInSlot[i].image = itemPic[i];
                 i = objInInv.Count;
             }
          
