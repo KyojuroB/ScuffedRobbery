@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
+
 
 public class Door : MonoBehaviour
 {
@@ -10,6 +9,9 @@ public class Door : MonoBehaviour
     bool inRange = false;
     [SerializeField] bool isKeyCard;
     [SerializeField] int keycardIndex;
+    bool isOpen = false;
+    [SerializeField] List<BoxCollider> colliders;
+    
     
     void Start()
     {
@@ -17,6 +19,13 @@ public class Door : MonoBehaviour
     }
     void Update()
     {
+        if ())
+
+
+
+
+
+
         if (inRange&&Input.GetKeyDown(KeyCode.E))
         {
             if (isKeyCard)
@@ -25,32 +34,27 @@ public class Door : MonoBehaviour
                 {
                     if (myAnim.GetBool("isOpen") == true)
                     {
+                        
                         myAnim.SetBool("isOpen", false);
                     }
                     else if (myAnim.GetBool("isOpen") == false)
                     {
                         myAnim.SetBool("isOpen", true);
                     }
-                }
-                
+                }                
             }
             else 
             { 
-             if (myAnim.GetBool("isOpen") == true)
+             if (isOpen == true)
              {
                  myAnim.SetBool("isOpen", false);
              }
-             else if (myAnim.GetBool("isOpen") == false) 
+             else if (isOpen == false) 
              {
                 myAnim.SetBool("isOpen", true);
              }
             }    
-
-
-
         }
-
-
     }
     private void OnTriggerEnter(Collider other)
     {

@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
+
+
 
 public class Inventory : MonoBehaviour
 {
@@ -26,10 +28,9 @@ public class Inventory : MonoBehaviour
         }
         for (int i = 0; i < actualSlots.Count; i++)
         {
-            actualSlots[i].transform.GetChild(0).GetComponent<Image>();
+            itemPicInSlot.Add(actualSlots[i].transform.GetChild(0).gameObject.GetComponent<Image>());
         }
-    }
-
+    }  
     public bool IsEquiped(int objIndex)
     {
         for (int i = 0; i < objInInv.Count; i++)
@@ -40,8 +41,7 @@ public class Inventory : MonoBehaviour
                
                 return true;
             }
-        }
-        
+        }       
          return false;
     }
     public bool IsInventorySpace()
@@ -53,26 +53,20 @@ public class Inventory : MonoBehaviour
                 Debug.Log("slot " + i + " Is open");
                 return true;               
             }
-        }
-        
+        }       
         return false;
-    }
-
-
-  
-        
+    }       
     public void AddToInventory(int indexCode)
     {
         for (int i = 0; i < objInInv.Count; i++)
         {
             if (objInInv[i] == 0)
             {
+                itemPicInSlot[i].sprite = itemPic[indexCode];
                 objInInv[i] = indexCode;
-                //itemPicInSlot[i].image = itemPic[i];
+                
                 i = objInInv.Count;
-            }
-         
-            
+            }           
         }
     }
     void Update()
@@ -88,8 +82,7 @@ public class Inventory : MonoBehaviour
             {
                 selectorPos++;
             }
-            selector.transform.position = actualSlots[selectorPos].transform.position;
-          
+            selector.transform.position = actualSlots[selectorPos].transform.position;          
         }
         else if (Input.GetAxis("Mouse ScrollWheel") > 0)
         {

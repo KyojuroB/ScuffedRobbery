@@ -2,30 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SecurityCam : MonoBehaviour
+public class MotionSensor : MonoBehaviour
 {
     bool isInArea;
-    // Start is called before the first frame update
     void Start()
     {
         
-      
     }
 
     // Update is called once per frame
     void Update()
     {
-
-    }
-    private void FixedUpdate()
-    {
- 
         
     }
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == ("Player"))
-        { 
+        {
             isInArea = true;
             StartCoroutine(CamActivation());
         }
@@ -44,5 +37,4 @@ public class SecurityCam : MonoBehaviour
         yield return isInArea = false;
 
     }
-
 }
