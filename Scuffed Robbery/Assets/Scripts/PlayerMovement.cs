@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     Vector3 moveDirection = Vector3.zero;
     float rotationX = 0;
 
-    [HideInInspector]
+    [HideInInspector] 
     public bool canMove = true;
 
     void Start()

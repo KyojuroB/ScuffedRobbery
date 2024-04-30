@@ -1,7 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Animations;
 
 public class Door : MonoBehaviour
 {
@@ -10,17 +11,17 @@ public class Door : MonoBehaviour
     [SerializeField] bool isKeyCard;
     [SerializeField] int keycardIndex;
     bool isOpen = false;
-    [SerializeField] List<BoxCollider> colliders;
-    
-    
+    Axis direction = Axis.Y;
+
+
     void Start()
     {
          myAnim = transform.GetChild(0).GetComponent<Animator>();
     }
     void Update()
     {
-        if ())
-
+        //if ())
+        
 
 
 
@@ -42,9 +43,13 @@ public class Door : MonoBehaviour
                         myAnim.SetBool("isOpen", true);
                     }
                 }                
-            }
+            }///////////
             else 
-            { 
+            {
+               // if (transform.position.y +FindAnyObjectByType<PlayerMovement>().transform.position. <)
+              //  { 
+                
+              //  }
              if (isOpen == true)
              {
                  myAnim.SetBool("isOpen", false);
