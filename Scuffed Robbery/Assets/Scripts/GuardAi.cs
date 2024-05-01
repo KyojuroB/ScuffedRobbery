@@ -5,13 +5,14 @@ using UnityEngine;
 using UnityEngine.AI;
 public class GuardAi : MonoBehaviour
 {
+    bool isRunning;
     [SerializeField] NavMeshAgent agent;
-        public bool isKeyDown;
+    public bool isKeyDown = false;
     [SerializeField] List<GameObject> wayPoints;
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -22,45 +23,82 @@ public class GuardAi : MonoBehaviour
             isKeyDown = true;
         }
 
-        
+
         if (Input.GetKeyUp(KeyCode.Q))
         {
-          isKeyDown = false;
+            isKeyDown = false;
+           StartWayPoints();
         }
 
         if (isKeyDown)
         {
-            agent.SetDestination(FindObjectOfType<PlayerMovement>().transform.position);
-        }
-        else if (!isKeyDown)
-        {
-            StartCoroutine(StartWayPoints());
+            //  agent.SetDestination(FindObjectOfType<PlayerMovement>().transform.position);
         }
     }
-
-    private IEnumerator StartWayPoints()
+    private void StartWayPoints()
     {
-        float closestDistance = 0;
+        int ammountOfTimesRan = 0;
+        float closestDistance = 99999;
+        int indexForCloset = 0;
         GameObject closestObject = null;
-       foreach (GameObject obj in wayPoints)
-       {
-            // Calculate the distance between the object and the point
-            float distance = Vector3.Distance(obj.transform.position, transform.position);
 
-            // Check if this object is closer than the previously closest object
+        Debug.Log("There are " + wayPoints.Count + " Waypoints");
+
+        for (int i = 0; i < wayPoints.Count; i++)
+        {
+
+            float distance = Vector3.Distance(transform.position, wayPoints[i].transform.position);
             if (distance < closestDistance)
             {
-                closestObject = obj;
                 closestDistance = distance;
+                closestObject = wayPoints[i];
+                indexForCloset = i;
             }
-       }
 
-        if (closestObject != null)
+            ammountOfTimesRan++;
+        }
+
+        if (ammountOfTimesRan == wayPoints.Count)
         {
             agent.SetDestination(closestObject.transform.position);
-            yield return transform.position == closestObject.transform.position;
-            Debug.Log("Yippe");
+            if (!agent.pathPending)
+            {
+                if (agent.remainingDistance <= agent.stoppingDistance)
+                {
+                    if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
+                    {
+
+
+                    }
+                    // Done
+
+
+
+                    Debug.Log("Yippe");
+                    StartCoroutine(PatrolWaypoints(indexForCloset));
+                }
+            }
         }
-            
+    }
+    private IEnumerator PatrolWaypoints(int currentWaypoint)
+    {
+        Debug.Log(currentWaypoint + " Is are current waypoint");
+        int nextWayPoint;
+        if (currentWaypoint + 1 > wayPoints.Count)
+        {
+            nextWayPoint = 0;
+        }
+        else
+        {
+            nextWayPoint = currentWaypoint + 1;
+        }
+        Debug.Log(nextWayPoint + " Is are destination"); 
+
+
+
+        agent.SetDestination(wayPoints[nextWayPoint].transform.position);
+        yield return transform.position == wayPoints[nextWayPoint].transform.position;
+        yield return new WaitForSeconds(Random.Range(4, 12));
+        StartCoroutine(PatrolWaypoints(nextWayPoint + 1));
     }
 }
