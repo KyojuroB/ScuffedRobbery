@@ -33,34 +33,57 @@ public class Door : MonoBehaviour
             {
                 if (FindObjectOfType<Inventory>().IsEquiped(keycardIndex))
                 {
-                    if (myAnim.GetBool("isOpen") == true)
+                    if (isOpen)
                     {
-                        
-                        myAnim.SetBool("isOpen", false);
+                        myAnim.SetTrigger("Close");
+                        // myAnim.ResetTrigger("Close");
+                        isOpen = false;
                     }
-                    else if (myAnim.GetBool("isOpen") == false)
+                    else
                     {
-                        myAnim.SetBool("isOpen", true);
+
+                        Vector3 directionToReference = FindObjectOfType<PlayerMovement>().transform.position - transform.position;
+                        float dotProduct = Vector3.Dot(transform.forward, directionToReference);
+                        if (dotProduct > 0)
+                        {
+                            myAnim.SetTrigger("Open2");
+                        }
+                        else if (dotProduct < 0)
+                        {
+                            myAnim.SetTrigger("Open1");
+                        }
+                        isOpen = true;
                     }
                 }                
             }///////////
+                                  
+                                                               
             else 
             {
-               // if (transform.position.y +FindAnyObjectByType<PlayerMovement>().transform.position. <)
-              //  { 
-                
-              //  }
-             if (isOpen == true)
-             {
-                 myAnim.SetBool("isOpen", false);
-             }
-             else if (isOpen == false) 
-             {
-                myAnim.SetBool("isOpen", true);
-             }
+                if (isOpen)
+                {
+                    myAnim.SetTrigger("Close");
+                   // myAnim.ResetTrigger("Close");
+                   isOpen = false;
+                }
+                else
+                {
+                    
+                    Vector3 directionToReference = FindObjectOfType<PlayerMovement>().transform.position - transform.position;
+                    float dotProduct = Vector3.Dot(transform.forward, directionToReference);
+                    if (dotProduct > 0)
+                    {
+                        myAnim.SetTrigger("Open2");
+                    }
+                    else if (dotProduct < 0)
+                    {
+                        myAnim.SetTrigger("Open1");
+                    }
+                    isOpen = true;
+                }
             }    
         }
-    }
+    }   
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
