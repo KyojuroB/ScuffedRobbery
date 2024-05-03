@@ -5,17 +5,26 @@ using UnityEngine;
 public class SecurityCam : MonoBehaviour
 {
     bool isInArea;
+    MeshRenderer mR;
     // Start is called before the first frame update
     void Start()
     {
-        
-      
+
+        mR = GetComponent<MeshRenderer>();
+        mR.enabled = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetKey(KeyCode.T))
+        {
+            mR.enabled = true;
+        }
+        else 
+        {
+            mR.enabled = false;
+        }
     }
     private void FixedUpdate()
     {

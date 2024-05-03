@@ -8,6 +8,7 @@ public class GuardAi : MonoBehaviour
     bool isRunning;
     [SerializeField] NavMeshAgent agent;
     public bool isKeyDown = false;
+    [SerializeField] GameObject parentWaypoints;
     [SerializeField] List<GameObject> wayPoints;
     private int currentWaypointIndex = 0;
     [SerializeField] float min;
@@ -15,6 +16,11 @@ public class GuardAi : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        for (int i = 0; i < parentWaypoints.transform.childCount; i++)
+        {
+           wayPoints.Add(parentWaypoints.transform.GetChild(i).gameObject);
+        }
+
         StartWayPoints();
     }
 
