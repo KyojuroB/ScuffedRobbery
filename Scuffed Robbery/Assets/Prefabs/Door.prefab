@@ -379,14 +379,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6829641608348752498}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.81, y: 0, z: -1.014}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7172301291924388749}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3859781815727479042
 MonoBehaviour:
@@ -874,7 +874,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c22777d6e868e4f2fb421913386b154e, type: 2}
+  - {fileID: 2100000, guid: f008288d9cc837e40a590507c850806c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -979,8 +979,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.9291868, y: 3.873409, z: 1.5870291}
-  m_Center: {x: -0.92734385, y: 1.4367045, z: -0.024251878}
+  m_Size: {x: 2.9291868, y: 3.6766994, z: 4}
+  m_Center: {x: -0.92734385, y: 1.338614, z: 0}
 --- !u!114 &2763542721992310886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -993,6 +993,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 324129728065c1e469ac7c53337ad55f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isKeyCard: 0
+  keycardIndex: 0
 --- !u!1 &8854911259634101591
 GameObject:
   m_ObjectHideFlags: 0
