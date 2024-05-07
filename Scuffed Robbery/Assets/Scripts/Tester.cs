@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class Tester : MonoBehaviour
 {
+    [SerializeField]GameObject gobj;
     // Start is called before the first frame update
     void Start()
     {
@@ -13,25 +15,11 @@ public class Tester : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-
-       
         
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Physics.Linecast(transform.position, gobj.transform.position))
         {
-            Vector3 directionToReference = FindObjectOfType<PlayerMovement>().transform.position - transform.position;
-
-            // Get the dot product of the direction vector and this object's forward vector
-            float dotProduct = Vector3.Dot(transform.forward, directionToReference);
-            if (dotProduct > 0) 
-            {
-                Debug.Log("1");
-            }
-            else if (dotProduct < 0) 
-            {
-             Debug.Log("2");
-            }
+            Debug.Log("blocked");
         }
-        
+
     }
 }
