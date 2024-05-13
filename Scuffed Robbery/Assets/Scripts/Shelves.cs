@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Tester1 : MonoBehaviour
+public class Shelves : MonoBehaviour
 {
     [SerializeField] GameObject canvasObj;
     [SerializeField] Material material;
@@ -37,9 +37,9 @@ public class Tester1 : MonoBehaviour
                 {
                     Debug.Log("Done");
                 }
-                
+
             }
-            
+
         }
         if (mouseOver && Input.GetKeyDown(KeyCode.E) && !isRunning)
         {
@@ -123,5 +123,3 @@ public class Tester1 : MonoBehaviour
         }
     }
 }
-
-
