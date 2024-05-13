@@ -26,7 +26,7 @@ public class Tester1 : MonoBehaviour
         newmat = mat.ToList();
         newmat.Add(material);
     }
-
+    
     void Update()
     {
         if (isRunning)
@@ -46,21 +46,21 @@ public class Tester1 : MonoBehaviour
             MouseAction();
         }
 
-        // Check for input to stop the action
+        
         if (isRunning && !Input.GetKey(KeyCode.E))
         {
             Destroy(realBar.gameObject);
             isRunning = false;
         }
 
-        // Change material if mouse is over and within range
+        
         if (mouseOver && Vector3.Distance(transform.position, FindObjectOfType<PlayerMovement>().transform.position) < maxRange)
         {
             meshR.materials = newmat.ToArray();
         }
         else
         {
-            // Revert to original material if not within range or mouse is not over
+          
             meshR.materials = mat;
             if (realBar != null)
             {
@@ -75,18 +75,17 @@ public class Tester1 : MonoBehaviour
         realBar = Instantiate(uiBarPref);
         realBar.transform.SetParent(canvasObj.transform, false);
 
-        // Find the child object that contains the Animator component
-        Animator barAnimator = realBar.transform.Find("BarAnim").GetComponent<Animator>(); // Replace "BarAnim" with the actual name of the child object
+        Animator barAnimator = realBar.transform.Find("BarAnim").GetComponent<Animator>(); 
 
 
         if (barAnimator != null)
         {
-            // Play the "Bar" animation if Animator component is found
+           
             barAnimator.Play("Bar");
         }
         else
         {
-            // Handle the case where Animator component is not found
+            
             Debug.LogError("Animator component not found on the UI bar prefab.");
             Destroy(realBar);
             isRunning = false;
@@ -97,7 +96,7 @@ public class Tester1 : MonoBehaviour
     private void OnMouseOver()
     {
         mouseOver = true;
-        // Check distance and change material if within range
+        
         if (Vector3.Distance(transform.position, FindObjectOfType<PlayerMovement>().transform.position) < maxRange)
         {
             meshR.materials = newmat.ToArray();

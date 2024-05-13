@@ -15,8 +15,8 @@ public class Tester : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        if (Physics.Linecast(transform.position, gobj.transform.position))
+        Debug.Log(Physics.Linecast(transform.position, gobj.transform.position, 6));
+        if (Physics.Linecast(transform.position, gobj.transform.position ,6))
         {
             Debug.Log("blocked");
         }

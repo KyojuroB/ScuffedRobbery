@@ -44,7 +44,7 @@ public class Door : MonoBehaviour
 
                         Vector3 directionToReference = FindObjectOfType<PlayerMovement>().transform.position - transform.position;
                         float dotProduct = Vector3.Dot(transform.forward, directionToReference);
-                        if (dotProduct > 0)
+                        if (dotProduct > 0) 
                         {
                             myAnim.SetTrigger("Open2");
                         }

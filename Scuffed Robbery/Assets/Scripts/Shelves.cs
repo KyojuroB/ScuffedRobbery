@@ -18,6 +18,8 @@ public class Shelves : MonoBehaviour
     MeshRenderer meshR;
     bool mouseOver;
     bool isRunning;
+    bool isInfo = false;
+    bool isFinished = false;
 
     void Start()
     {
@@ -25,6 +27,10 @@ public class Shelves : MonoBehaviour
         mat = meshR.materials;
         newmat = mat.ToList();
         newmat.Add(material);
+    }
+    public void InfoTrue()
+    {
+        isInfo = true;
     }
 
     void Update()
@@ -35,7 +41,18 @@ public class Shelves : MonoBehaviour
             {
                 if (realBar.transform.Find("BarAnim").GetComponent<Image>().fillAmount == 1)
                 {
+                    isFinished = true;
                     Debug.Log("Done");
+                    if (isInfo)
+                    {
+                        Debug.Log("InfoOne");
+                    }
+                    if (realBar != null)
+                    { 
+                        Destroy(realBar.gameObject);
+                    }
+                    meshR.materials = mat;
+                    Destroy(this);
                 }
 
             }
@@ -54,7 +71,7 @@ public class Shelves : MonoBehaviour
         }
 
         // Change material if mouse is over and within range
-        if (mouseOver && Vector3.Distance(transform.position, FindObjectOfType<PlayerMovement>().transform.position) < maxRange)
+        if (mouseOver && Vector3.Distance(transform.position, FindObjectOfType<PlayerMovement>().transform.position) < maxRange && !isFinished)
         {
             meshR.materials = newmat.ToArray();
         }
@@ -98,7 +115,7 @@ public class Shelves : MonoBehaviour
     {
         mouseOver = true;
         // Check distance and change material if within range
-        if (Vector3.Distance(transform.position, FindObjectOfType<PlayerMovement>().transform.position) < maxRange)
+        if (Vector3.Distance(transform.position, FindObjectOfType<PlayerMovement>().transform.position) < maxRange && !isFinished)
         {
             meshR.materials = newmat.ToArray();
         }
