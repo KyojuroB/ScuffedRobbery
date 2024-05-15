@@ -12,8 +12,8 @@ public class Door : MonoBehaviour
     [SerializeField] int keycardIndex;
     bool isOpen = false;
     Axis direction = Axis.Y;
-
-
+    [SerializeField] GameObject noKeyText;
+    [SerializeField] GameObject canvasObj;
     void Start()
     {
          myAnim = transform.GetChild(0).GetComponent<Animator>();
@@ -44,7 +44,7 @@ public class Door : MonoBehaviour
 
                         Vector3 directionToReference = FindObjectOfType<PlayerMovement>().transform.position - transform.position;
                         float dotProduct = Vector3.Dot(transform.forward, directionToReference);
-                        if (dotProduct > 0) 
+                        if (dotProduct > 0)
                         {
                             myAnim.SetTrigger("Open2");
                         }
@@ -54,7 +54,14 @@ public class Door : MonoBehaviour
                         }
                         isOpen = true;
                     }
-                }                
+                }
+                else
+                {
+                    var text = Instantiate(noKeyText);
+                    text.transform.SetParent(canvasObj.transform, false);
+                    StartCoroutine(DelText(text));
+
+                }
             }///////////
                                   
                                                                
@@ -83,7 +90,12 @@ public class Door : MonoBehaviour
                 }
             }    
         }
-    }   
+    }
+    IEnumerator DelText(GameObject text)
+    {
+        yield return new WaitForSeconds(3);
+        Destroy(text);
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
