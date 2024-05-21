@@ -77,7 +77,7 @@ public class Shelves : MonoBehaviour
         }
         else
         {
-            // Revert to original material if not within range or mouse is not over
+            // Revert to original material 
             meshR.materials = mat;
             if (realBar != null)
             {
@@ -92,18 +92,18 @@ public class Shelves : MonoBehaviour
         realBar = Instantiate(uiBarPref);
         realBar.transform.SetParent(canvasObj.transform, false);
 
-        // Find the child object that contains the Animator component
-        Animator barAnimator = realBar.transform.Find("BarAnim").GetComponent<Animator>(); // Replace "BarAnim" with the actual name of the child object
+     
+        Animator barAnimator = realBar.transform.Find("BarAnim").GetComponent<Animator>(); 
 
 
         if (barAnimator != null)
         {
-            // Play the "Bar" animation if Animator component is found
+            
             barAnimator.Play("Bar");
         }
         else
         {
-            // Handle the case where Animator component is not found
+           
             Debug.LogError("Animator component not found on the UI bar prefab.");
             Destroy(realBar);
             isRunning = false;
@@ -114,7 +114,7 @@ public class Shelves : MonoBehaviour
     private void OnMouseOver()
     {
         mouseOver = true;
-        // Check distance and change material if within range
+        
         if (Vector3.Distance(transform.position, FindObjectOfType<PlayerMovement>().transform.position) < maxRange && !isFinished)
         {
             meshR.materials = newmat.ToArray();
@@ -128,14 +128,14 @@ public class Shelves : MonoBehaviour
         meshR.materials = mat;
         if (realBar != null)
         {
-            // Check if the realBar has a child object named "BarAnim"
+            
             Transform barAnimChild = realBar.transform.Find("BarAnim");
             if (barAnimChild != null)
             {
-                // Destroy the child object
+              
                 Destroy(barAnimChild.gameObject);
             }
-            // Then destroy the realBar itself
+            
             Destroy(realBar);
         }
     }

@@ -17,7 +17,8 @@ public class Tester1 : MonoBehaviour
     public List<Material> newmat;
     MeshRenderer meshR;
     bool mouseOver;
-    bool isRunning;
+    bool isRunning = false;
+    bool isFinished = false;
 
     void Start()
     {
@@ -26,7 +27,8 @@ public class Tester1 : MonoBehaviour
         newmat = mat.ToList();
         newmat.Add(material);
     }
-    
+ 
+
     void Update()
     {
         if (isRunning)
@@ -35,91 +37,69 @@ public class Tester1 : MonoBehaviour
             {
                 if (realBar.transform.Find("BarAnim").GetComponent<Image>().fillAmount == 1)
                 {
+                    isFinished = true;
                     Debug.Log("Done");
-                }
                 
+                    if (realBar != null)
+                    {
+                        Destroy(realBar.gameObject);
+                    }
+                    meshR.materials = mat;
+                    Destroy(this);
+                }
+
             }
-            
-        }
-        if (mouseOver && Input.GetKeyDown(KeyCode.E) && !isRunning)
-        {
-            MouseAction();
+
         }
 
-        
-        if (isRunning && !Input.GetKey(KeyCode.E))
+
+        if (mouseOver == true && Input.GetKeyDown(KeyCode.E)&& !isRunning)
         {
-            Destroy(realBar.gameObject);
-            isRunning = false;
+           
+            isRunning = true;
+            realBar = Instantiate(uiBarPref);
+            realBar.transform.SetParent(canvasObj.transform, false);
+            Debug.Log("w");
         }
 
-        
-        if (mouseOver && Vector3.Distance(transform.position, FindObjectOfType<PlayerMovement>().transform.position) < maxRange)
+        // Change material if mouse is over and within range
+        if (mouseOver && Vector3.Distance(transform.position, FindObjectOfType<PlayerMovement>().transform.position) < maxRange && !isFinished)
         {
+            mouseOver = true;
             meshR.materials = newmat.ToArray();
         }
         else
         {
-          
+            // Revert to original material 
+            mouseOver = false;
             meshR.materials = mat;
-            if (realBar != null)
-            {
-                Destroy(realBar);
-            }
+            if (realBar != null) ;
+       
         }
     }
 
     void MouseAction()
     {
-        isRunning = true;
-        realBar = Instantiate(uiBarPref);
-        realBar.transform.SetParent(canvasObj.transform, false);
 
-        Animator barAnimator = realBar.transform.Find("BarAnim").GetComponent<Animator>(); 
-
-
-        if (barAnimator != null)
-        {
-           
-            barAnimator.Play("Bar");
-        }
-        else
-        {
-            
-            Debug.LogError("Animator component not found on the UI bar prefab.");
-            Destroy(realBar);
-            isRunning = false;
-            return;
-        }
     }
 
     private void OnMouseOver()
     {
-        mouseOver = true;
-        
-        if (Vector3.Distance(transform.position, FindObjectOfType<PlayerMovement>().transform.position) < maxRange)
+       
+
+        if (Vector3.Distance(transform.position, FindObjectOfType<PlayerMovement>().transform.position) < maxRange && !isFinished)
         {
+            mouseOver = true;
             meshR.materials = newmat.ToArray();
         }
     }
 
     private void OnMouseExit()
     {
-        isRunning = false;
+  
         mouseOver = false;
         meshR.materials = mat;
-        if (realBar != null)
-        {
-            // Check if the realBar has a child object named "BarAnim"
-            Transform barAnimChild = realBar.transform.Find("BarAnim");
-            if (barAnimChild != null)
-            {
-                // Destroy the child object
-                Destroy(barAnimChild.gameObject);
-            }
-            // Then destroy the realBar itself
-            Destroy(realBar);
-        }
+
     }
 }
 

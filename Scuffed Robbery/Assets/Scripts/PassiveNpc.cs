@@ -15,9 +15,12 @@ public class PassiveNpc : MonoBehaviour
     [SerializeField] float min;
     [SerializeField] float max;
     Animation anim;
+    Animator animator;
     bool animated;
+    float velo;
     void Start()
     {
+        animator = GetComponent<Animator>();
         anim = GetComponent<Animation>();
         for (int i = 0; i < parentWaypoints.transform.childCount; i++)
         {
@@ -29,6 +32,16 @@ public class PassiveNpc : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (agent.remainingDistance > 0.2f)
+        {
+            animator.SetBool("walking", true);
+        }
+        if (agent.remainingDistance < 0.1f)
+        {
+            animator.SetBool("walking", false);
+           
+        }
+        
         if (animated)
         {
             anim.clip = animEvents[currentWaypointIndex];

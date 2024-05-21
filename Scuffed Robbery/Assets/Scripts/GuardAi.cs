@@ -13,9 +13,11 @@ public class GuardAi : MonoBehaviour
     private int currentWaypointIndex = 0;
     [SerializeField] float min;
     [SerializeField] float max;
+    Animator animator;
     // Start is called before the first frame update
     void Start()
     {
+        animator = GetComponent<Animator>();
         for (int i = 0; i < parentWaypoints.transform.childCount; i++)
         {
            wayPoints.Add(parentWaypoints.transform.GetChild(i).gameObject);
@@ -27,6 +29,15 @@ public class GuardAi : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (agent.remainingDistance > 0.2f)
+        {
+            animator.SetBool("walking", true);
+        }
+        if (agent.remainingDistance < 0.1f)
+        {
+            animator.SetBool("walking", false);
+
+        }
         if (Input.GetKeyDown(KeyCode.Q))
         {
             isKeyDown = true;
