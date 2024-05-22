@@ -33,16 +33,19 @@ public class Inventory : MonoBehaviour
     }  
     public bool IsEquiped(int objIndex)
     {
-        for (int i = 0; i < objInInv.Count; i++)
+
+        if (objInInv[selectorPos] == objIndex)
         {
-            if (objInInv[i] ==objIndex)
-            {
-                Debug.Log("we got it");
+            Debug.Log("we got it");
+
+            return true;
+        }
+        else 
+        {
+            return false;
+        }
                
-                return true;
-            }
-        }       
-         return false;
+         
     }
     public bool IsInventorySpace()
     {
