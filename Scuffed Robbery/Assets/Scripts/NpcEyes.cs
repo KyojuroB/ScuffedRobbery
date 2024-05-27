@@ -10,6 +10,24 @@ public class NpcEyes : MonoBehaviour
     public LayerMask obstacleMask;
     public Transform eyePosition;
     public bool inView = false;
+    public bool isRunningT;
+  
+    [SerializeField] GameObject investigationGroup;
+    [SerializeField] GameObject realCamBar;
+    [SerializeField] GameObject cameraBar;
+    //Ray vars and stuff
+    public Transform rayOrigin;
+    Transform targetRay;
+    private LineRenderer lineRenderer;
+
+    private void Start()
+    {
+        targetRay = FindObjectOfType<PlayerMovement>().transform;
+        lineRenderer = GetComponent<LineRenderer>();
+        lineRenderer.positionCount = 2;
+        lineRenderer.startWidth = 0.02f;
+        lineRenderer.endWidth = 0.02f;
+    }
 
     void Update()
     {
@@ -33,26 +51,81 @@ public class NpcEyes : MonoBehaviour
                 {
 
                     inView = true;
+                    if (FindObjectOfType<GameStates>().inRestrictedArea)
+                    {
+                        if (FindObjectOfType<GameStates>().isDesguised)
+                        {
+
+                        }
+                        else
+                        {
+                            gameObject.GetComponent<GuardAi>().isTrackingPlayer = true;
+                            ShowRay();
+                            if (targetRay == null || rayOrigin == null)
+                            {
+                                Debug.LogError("Ray Origin or Target is not assigned.");
+                                return;
+                            }
+                            if (!isRunningT)
+                            {
+               
+                                investigationGroup.SetActive(true);
+                                realCamBar = Instantiate(cameraBar);
+                                realCamBar.transform.SetParent(investigationGroup.transform, false);
+                            }
+                            isRunningT = true;
+
+                            Vector3 direction = (targetRay.position - rayOrigin.position).normalized;
+
+
+                            Vector3 endPosition = targetRay.position;
+
+                            lineRenderer.SetPosition(0, rayOrigin.position);
+                            lineRenderer.SetPosition(1, endPosition);
+
+
+                        }
+                    }
+                    else
+                    {                                     
+                       DisableRay();                       
+                    }
+                    //Crime Noticedd idk do it late ig
                 }
                 else                      
                 {
+                    DisableRay();
                     inView = false;
                 }
             }
             else
-            { 
+            {
+                DisableRay();
                 inView = false;
             }
         }
     }
-
+    private void DisableRay()
+    {
+        isRunningT = false;
+        lineRenderer.enabled = false;
+        Destroy(realCamBar);
+        if (investigationGroup.transform.childCount == 0)
+        {
+            investigationGroup.SetActive(false);
+        }
+    }
+    private void ShowRay()
+    {
+        lineRenderer.enabled = true;
+    }
 
 
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, viewRadius);
+        Gizmos.DrawWireSphere(transform.position, viewRadius);//Draws the actual sphere thingy thing (0_0)
         Vector3 fovLine1 = Quaternion.AngleAxis(viewAngle / 2, transform.up) * transform.forward * viewRadius;
         Vector3 fovLine2 = Quaternion.AngleAxis(-viewAngle / 2, transform.up) * transform.forward * viewRadius;
         Gizmos.color = Color.yellow;

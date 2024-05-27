@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEngine.ProBuilder.AutoUnwrapSettings;
+
 public class GuardAi : MonoBehaviour
 {
     bool isRunning;
     [SerializeField] NavMeshAgent agent;
-    public bool isKeyDown = false;
+    public bool isfollow;
     [SerializeField] GameObject parentWaypoints;
     [SerializeField] List<GameObject> wayPoints;
     private int currentWaypointIndex = 0;
     [SerializeField] float min;
     [SerializeField] float max;
     Animator animator;
+    public bool isTrackingPlayer;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,22 +41,33 @@ public class GuardAi : MonoBehaviour
             animator.SetBool("walking", false);
 
         }
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            isKeyDown = true;
-        }
 
 
-        if (Input.GetKeyUp(KeyCode.Q))
+        if (isTrackingPlayer)
         {
-            isKeyDown = false;
-          
-        }
+            agent.ResetPath();
 
-        if (isKeyDown)
-        {
-            //  agent.SetDestination(FindObjectOfType<PlayerMovement>().transform.position);
+            if (isfollow)
+            {
+                agent.SetDestination(FindObjectOfType<PlayerMovement>().transform.position);
+            }
+            else
+            {
+                FaceTarget(FindObjectOfType<PlayerMovement>().transform.position);
+            }
+             
         }
+        if (isTrackingPlayer && (agent.remainingDistance < 1))
+        { 
+            isTrackingPlayer = false;
+        }
+    }
+    private void FaceTarget(Vector3 destination)
+    {
+        Vector3 lookPos = destination - transform.position;
+        lookPos.y = 0;
+        Quaternion rotation = Quaternion.LookRotation(lookPos);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 5);
     }
     private void StartWayPoints()
     {
@@ -78,7 +92,7 @@ public class GuardAi : MonoBehaviour
     {
         while (true)
         {
-            if (!agent.pathPending && agent.remainingDistance < 0.1f)
+            if (!agent.pathPending && agent.remainingDistance < 0.1f && !isTrackingPlayer)
             {
                 currentWaypointIndex = (currentWaypointIndex + 1) % wayPoints.Count;
                 agent.SetDestination(wayPoints[currentWaypointIndex].transform.position);

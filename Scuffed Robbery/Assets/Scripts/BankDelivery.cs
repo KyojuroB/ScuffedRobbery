@@ -34,7 +34,6 @@ public class BankDelivery : MonoBehaviour
     {
 
 
-
         if (mouseOver == true && Input.GetKeyDown(KeyCode.E))
         {
             if (FindObjectOfType<Inventory>().IsEquiped(toolIndex))

@@ -57,6 +57,7 @@ public class ServerHack : MonoBehaviour
         {
             if (FindObjectOfType<Inventory>().IsEquiped(toolIndex))
             {
+                FindObjectOfType<Inventory>().RemoveFromInventory(toolIndex);
                 isRunning = true;
                 realBar = Instantiate(uiBarPref);
                 realBar.transform.SetParent(canvasObj.transform, false);

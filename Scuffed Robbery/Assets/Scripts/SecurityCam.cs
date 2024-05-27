@@ -11,9 +11,9 @@ public class SecurityCam : MonoBehaviour
     
     public  bool isInArea;
     MeshRenderer mR;
-    public Transform rayOrigin;       // The starting point of the ray
-    Transform target;            // The target GameObject to point towards
-    private LineRenderer lineRenderer;  // Reference to the LineRenderer component
+    public Transform rayOrigin;       
+    Transform target;         
+    private LineRenderer lineRenderer; 
     // Start is called before the first frame update
     bool isRunningT;
     void Start()
@@ -25,10 +25,10 @@ public class SecurityCam : MonoBehaviour
         
         lineRenderer = GetComponent<LineRenderer>();
 
-        // Initialize LineRenderer settings
-        lineRenderer.positionCount = 2;  // We need two points to draw a line
-        lineRenderer.startWidth = 0.02f; // Set the width of the line
-        lineRenderer.endWidth = 0.02f;   // Set the width of the line
+       
+        lineRenderer.positionCount = 2; 
+        lineRenderer.startWidth = 0.02f; 
+        lineRenderer.endWidth = 0.02f;   
     }
 
     // Update is called once per frame
@@ -55,13 +55,12 @@ public class SecurityCam : MonoBehaviour
                         setUpBar();
                     }
                     isRunningT = true;
-                    // Calculate the direction towards the target
+                    
                     Vector3 direction = (target.position - rayOrigin.position).normalized;
 
-                    // Directly set the end position to the target position
+
                     Vector3 endPosition = target.position;
 
-                    // Update LineRenderer positions to draw the ray
                     lineRenderer.SetPosition(0, rayOrigin.position);
                     lineRenderer.SetPosition(1, endPosition);
                 }

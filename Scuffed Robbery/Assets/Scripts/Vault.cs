@@ -40,6 +40,7 @@ public class Vault : MonoBehaviour
             {
                 if (realBar.transform.Find("BarAnim").GetComponent<Image>().fillAmount == 1)
                 {
+                    FindObjectOfType<Inventory>().RemoveFromInventory(intForTool);
                    vaultanim.enabled = true;
                    
                     isFinished = true;
