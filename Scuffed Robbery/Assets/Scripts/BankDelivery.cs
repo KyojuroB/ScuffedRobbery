@@ -7,7 +7,9 @@ using System.Linq;
 
 public class BankDelivery : MonoBehaviour
 {
- 
+    [SerializeField] int toolIndex;
+    [SerializeField] GameObject noToolText;
+    [SerializeField] GameObject canvasObj;
     [SerializeField] Material material;
     [SerializeField] float maxRange;
     public Material[] mat;
@@ -35,21 +37,31 @@ public class BankDelivery : MonoBehaviour
 
         if (mouseOver == true && Input.GetKeyDown(KeyCode.E))
         {
-            if (!isOpen)
+            if (FindObjectOfType<Inventory>().IsEquiped(toolIndex))
             {
-                anim.SetBool("OpenDoor", true);
-                isOpen = true;
-               
+                if (!isOpen)
+                {
+                    anim.SetBool("OpenDoor", true);
+                    isOpen = true;
 
+
+                }
+                else
+                {
+                    anim.SetBool("OpenDoor", false);
+                    isOpen = false;
+
+                }
+
+                Debug.Log("w");
             }
             else
             {
-                anim.SetBool("OpenDoor", false);
-                isOpen = false;
-               
+                var text = Instantiate(noToolText);
+                text.transform.SetParent(canvasObj.transform, false);
+                StartCoroutine(DelText(text));
             }
-             
-            Debug.Log("w");
+
         }
 
        
@@ -67,7 +79,11 @@ public class BankDelivery : MonoBehaviour
 
         }
     }
-
+    IEnumerator DelText(GameObject text)
+    {
+        yield return new WaitForSeconds(3);
+        Destroy(text);
+    }
 
 
     private void OnMouseOver()

@@ -8,98 +8,54 @@ using UnityEngine.UI;
 
 public class Tester1 : MonoBehaviour
 {
-    [SerializeField] GameObject canvasObj;
-    [SerializeField] Material material;
-    [SerializeField] GameObject uiBarPref;
-    GameObject realBar;
-    [SerializeField] float maxRange;
-    public Material[] mat;
-    public List<Material> newmat;
-    MeshRenderer meshR;
-    bool mouseOver;
-    bool isRunning = false;
-    bool isFinished = false;
-
-    void Start()
-    {
-        meshR = GetComponent<MeshRenderer>();
-        mat = meshR.materials;
-        newmat = mat.ToList();
-        newmat.Add(material);
-    }
- 
+    public float viewRadius = 10f;
+    public float viewAngle = 90f;
+    public LayerMask targetMask;
+    public LayerMask obstacleMask;
+    public Transform eyePosition;
 
     void Update()
     {
-        if (isRunning)
+        FindVisibleTargets();
+    }
+
+    void FindVisibleTargets()
+    {
+        Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
+
+        foreach (Collider target in targetsInViewRadius)
         {
-            if (realBar != null)
+            Transform targetTransform = target.transform;
+            Vector3 directionToTarget = (targetTransform.position - eyePosition.position).normalized;
+
+            if (Vector3.Angle(eyePosition.forward, directionToTarget) < viewAngle / 2)
             {
-                if (realBar.transform.Find("BarAnim").GetComponent<Image>().fillAmount == 1)
+                float distanceToTarget = Vector3.Distance(eyePosition.position, targetTransform.position);
+
+                if (!Physics.Raycast(eyePosition.position, directionToTarget, distanceToTarget, obstacleMask))
                 {
-                    isFinished = true;
-                    Debug.Log("Done");
-                
-                    if (realBar != null)
-                    {
-                        Destroy(realBar.gameObject);
-                    }
-                    meshR.materials = mat;
-                    Destroy(this);
+                    
+                    OnTargetVisible(targetTransform);
                 }
-
             }
-
-        }
-
-
-        if (mouseOver == true && Input.GetKeyDown(KeyCode.E)&& !isRunning)
-        {
-           
-            isRunning = true;
-            realBar = Instantiate(uiBarPref);
-            realBar.transform.SetParent(canvasObj.transform, false);
-            Debug.Log("w");
-        }
-
-        // Change material if mouse is over and within range
-        if (mouseOver && Vector3.Distance(transform.position, FindObjectOfType<PlayerMovement>().transform.position) < maxRange && !isFinished)
-        {
-            mouseOver = true;
-            meshR.materials = newmat.ToArray();
-        }
-        else
-        {
-            // Revert to original material 
-            mouseOver = false;
-            meshR.materials = mat;
-            if (realBar != null) ;
-       
         }
     }
 
-    void MouseAction()
+    void OnTargetVisible(Transform target)
     {
-
+        Debug.Log("Target in sight: " + target.name);
     }
 
-    private void OnMouseOver()
+   
+    private void OnDrawGizmos()
     {
-       
-
-        if (Vector3.Distance(transform.position, FindObjectOfType<PlayerMovement>().transform.position) < maxRange && !isFinished)
-        {
-            mouseOver = true;
-            meshR.materials = newmat.ToArray();
-        }
-    }
-
-    private void OnMouseExit()
-    {
-  
-        mouseOver = false;
-        meshR.materials = mat;
-
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, viewRadius);
+        Vector3 fovLine1 = Quaternion.AngleAxis(viewAngle / 2, transform.up) * transform.forward * viewRadius;
+        Vector3 fovLine2 = Quaternion.AngleAxis(-viewAngle / 2, transform.up) * transform.forward * viewRadius;
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(eyePosition.position, eyePosition.position + fovLine1);
+        Gizmos.DrawLine(eyePosition.position, eyePosition.position + fovLine2);
     }
 }
 

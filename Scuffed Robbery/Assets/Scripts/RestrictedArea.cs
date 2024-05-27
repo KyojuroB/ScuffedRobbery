@@ -4,32 +4,63 @@ using UnityEngine;
 
 public class RestrictedArea : MonoBehaviour
 {
-    bool isInArea = false;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] GameObject uiWarning;
+    public bool isInside = false;
+    private int triggerCount = 0;
+    MeshRenderer mR;
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+
+        mR = GetComponent<MeshRenderer>();
+        mR.enabled = false;
+        uiWarning.SetActive(false);
+    }
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.T))
+        {
+            mR.enabled = true;
+        }
+        else
+        {
+            mR.enabled = false;
+        }
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == ("Player"))
+        
+        if (other.CompareTag("Player"))
         {
-            isInArea = true;
-            FindObjectOfType<GameStates>().SetRestricted(true);
+            triggerCount++;
+            if (triggerCount > 0)
+            {
+                FindObjectOfType<GameStates>().setRestricted(true);
+                uiWarning.SetActive(true);
+                isInside = true;
+                
+            }
+            Debug.Log("Entered the trigger area.");
         }
+
+
+
     }
+
+    // Called when another collider exits the trigger
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == ("Player"))
+
+        if (other.CompareTag("Player")) 
         {
-            isInArea = false;
-            FindObjectOfType<GameStates>().SetRestricted(false);
+            triggerCount--;
+            if (triggerCount <= 0)
+            {
+                FindObjectOfType<GameStates>().setRestricted(false);
+                isInside = false;
+                uiWarning.SetActive(false);
+            }
+            Debug.Log("Exited the trigger area.");
         }
     }
-}
+}   

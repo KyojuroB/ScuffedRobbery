@@ -12,6 +12,7 @@ public class Inventory : MonoBehaviour
     [SerializeField] GameObject selector;
     [SerializeField] int selectorPos;
     [SerializeField] GameObject inventoryGroup;
+    [SerializeField] Sprite uiMask;
 
     [Header("Alll Lists")]
     [SerializeField] List<GameObject> actualSlots;
@@ -36,7 +37,7 @@ public class Inventory : MonoBehaviour
 
         if (objInInv[selectorPos] == objIndex)
         {
-            Debug.Log("we got it");
+           
 
             return true;
         }
@@ -70,6 +71,17 @@ public class Inventory : MonoBehaviour
                 
                 i = objInInv.Count;
             }           
+        }
+    }
+    public void RemoveFromInventory(int objIndex) 
+    {
+        for (int i = 0; i < objInInv.Count; i++)
+        {
+            if (objInInv[i] == objIndex)
+            {
+                itemPicInSlot[i].sprite = uiMask;
+                objInInv[i] = 0;
+            }
         }
     }
     void Update()

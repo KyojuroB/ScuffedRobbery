@@ -45,6 +45,7 @@ public class Shelves : MonoBehaviour
                     Debug.Log("Done");
                     if (isInfo)
                     {
+                        FindObjectOfType<GameStates>().hasShelveInfo = true;
                         Debug.Log("InfoOne");
                     }
                     if (realBar != null)
@@ -63,21 +64,21 @@ public class Shelves : MonoBehaviour
             MouseAction();
         }
 
-        // Check for input to stop the action
+  
         if (isRunning && !Input.GetKey(KeyCode.E))
         {
             Destroy(realBar.gameObject);
             isRunning = false;
         }
 
-        // Change material if mouse is over and within range
+       
         if (mouseOver && Vector3.Distance(transform.position, FindObjectOfType<PlayerMovement>().transform.position) < maxRange && !isFinished)
         {
             meshR.materials = newmat.ToArray();
         }
         else
         {
-            // Revert to original material 
+            
             meshR.materials = mat;
             if (realBar != null)
             {
