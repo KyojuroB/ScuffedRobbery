@@ -13,17 +13,28 @@ public class GameStates : MonoBehaviour
     public int shelveWithInfoInt;
     public int pipeChosen;
     List<RestrictedArea> restrictedAreas;
-    public bool isDesguised;   
+    public bool isDesguised;
+    [SerializeField] GameObject desguiseIcon;
+    [SerializeField] GameObject desguiseTresspass;
+
     // Start is called before the first frame update
     void Start()
     {
-       // QualitySettings.vSyncCount = 1;
-       // Application.targetFrameRate = targetFrameRate;
+        desguiseTresspass.SetActive(false);
+        desguiseIcon.SetActive(false);
+        // QualitySettings.vSyncCount = 1;
+        // Application.targetFrameRate = targetFrameRate;
         shelveWithInfoInt = Random.Range(0, shelves.Count - 1);
         shelves[shelveWithInfoInt].GetComponent<Shelves>().InfoTrue();
         pipeChosen = Random.Range(0, pipes.Count - 1);
         pipes[pipeChosen].GetComponent<Pipes>().SetUpState(true);
 
+    }
+    public void Desguiseue()
+    {
+        isDesguised = true;
+        desguiseTresspass.SetActive(true);
+        desguiseIcon.SetActive(true);
     }
 
     // Update is called once per frame

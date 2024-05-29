@@ -68,7 +68,7 @@ public class NpcEyes : MonoBehaviour
                             }
                             if (!isRunningT)
                             {
-               
+                                
                                 investigationGroup.SetActive(true);
                                 realCamBar = Instantiate(cameraBar);
                                 realCamBar.transform.SetParent(investigationGroup.transform, false);
