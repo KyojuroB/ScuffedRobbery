@@ -1,33 +1,52 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
+using UnityEngine.ProBuilder;
+using UnityEngine.XR;
 
 public class Door : MonoBehaviour
 {
     Animator myAnim;
-    bool inRange = false;
+    [SerializeField]float range;
     [SerializeField] bool isKeyCard;
     [SerializeField] int keycardIndex;
     bool isOpen = false;
-    Axis direction = Axis.Y;
     [SerializeField] GameObject noKeyText;
     [SerializeField] GameObject canvasObj;
+    [SerializeField] Material material;
+    public Material[] mat;
+    public List<Material> newmat;
+    [SerializeField]MeshRenderer meshR;
+    public bool mouseOver;
     void Start()
     {
-         myAnim = transform.GetChild(0).GetComponent<Animator>();
+        mat = meshR.materials;
+        newmat = mat.ToList();
+        newmat.Add(material);
+        myAnim = transform.GetChild(0).GetComponent<Animator>();
     }
     void Update()
     {
-        //if ())
-        
+        if (mouseOver && Vector3.Distance(transform.position, FindObjectOfType<PlayerMovement>().transform.position) <range)
+        {
+            meshR.materials = newmat.ToArray();
+        }
+        else
+        {
+
+            meshR.materials = mat;
+        }
 
 
 
 
 
-        if (inRange&&Input.GetKeyDown(KeyCode.E))
+
+        if (Vector3.Distance(transform.position, FindObjectOfType<PlayerMovement>().transform.position) < range && Input.GetKeyDown(KeyCode.E) && mouseOver)
         {
             if (isKeyCard)
             {
@@ -96,23 +115,23 @@ public class Door : MonoBehaviour
         yield return new WaitForSeconds(3);
         Destroy(text);
     }
-    private void OnTriggerEnter(Collider other)
+    private void OnMouseOver()
     {
-        if (other.gameObject.tag == "Player")
-        { 
-                  inRange = true;
-            Debug.Log("In");
-        }
-    
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.tag == "Player")
+
+
+        if (Vector3.Distance(transform.position, FindObjectOfType<PlayerMovement>().transform.position) < range)
         {
-            inRange = false;
-            Debug.Log("Out");
+            mouseOver = true;
+            meshR.materials = newmat.ToArray();
         }
+    }
+    private void OnMouseExit()
+    {
+
+        mouseOver = false;
+        meshR.materials = mat;
+
     }
 
-    
+
 }

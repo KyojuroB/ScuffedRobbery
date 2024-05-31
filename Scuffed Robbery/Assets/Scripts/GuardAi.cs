@@ -34,11 +34,15 @@ public class GuardAi : MonoBehaviour
     {
         if (agent.remainingDistance > 0.2f)
         {
+            animator.SetBool("idle", false);
             animator.SetBool("walking", true);
+
         }
         if (agent.remainingDistance < 0.1f)
         {
+        
             animator.SetBool("walking", false);
+            animator.SetBool("idle", true);
 
         }
 
@@ -59,7 +63,7 @@ public class GuardAi : MonoBehaviour
         }
         if (isTrackingPlayer && (agent.remainingDistance < 1))
         { 
-            isTrackingPlayer = false;
+           // isTrackingPlayer = false;
         }
     }
     private void FaceTarget(Vector3 destination)
