@@ -27,7 +27,7 @@ public class Door : MonoBehaviour
         mat = meshR.materials;
         newmat = mat.ToList();
         newmat.Add(material);
-        myAnim = transform.GetChild(0).GetComponent<Animator>();
+        myAnim = transform.parent.GetComponent<Animator>();
     }
     void Update()
     {
