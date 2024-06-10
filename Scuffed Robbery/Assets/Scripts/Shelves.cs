@@ -62,13 +62,16 @@ public class Shelves : MonoBehaviour
         if (mouseOver && Input.GetKeyDown(KeyCode.E) && !isRunning)
         {
             MouseAction();
+            FindObjectOfType<GameStates>().Setillegal(true);
         }
 
   
         if (isRunning && !Input.GetKey(KeyCode.E))
         {
+         
             Destroy(realBar.gameObject);
             isRunning = false;
+
         }
 
        
@@ -78,7 +81,7 @@ public class Shelves : MonoBehaviour
         }
         else
         {
-            
+            FindObjectOfType<GameStates>().Setillegal(false);
             meshR.materials = mat;
             if (realBar != null)
             {
@@ -92,8 +95,8 @@ public class Shelves : MonoBehaviour
         isRunning = true;
         realBar = Instantiate(uiBarPref);
         realBar.transform.SetParent(canvasObj.transform, false);
+    
 
-     
         Animator barAnimator = realBar.transform.Find("BarAnim").GetComponent<Animator>(); 
 
 
@@ -118,12 +121,14 @@ public class Shelves : MonoBehaviour
         
         if (Vector3.Distance(transform.position, FindObjectOfType<PlayerMovement>().transform.position) < maxRange && !isFinished)
         {
+          
             meshR.materials = newmat.ToArray();
         }
     }
 
     private void OnMouseExit()
     {
+        FindObjectOfType<GameStates>().Setillegal(false);
         isRunning = false;
         mouseOver = false;
         meshR.materials = mat;

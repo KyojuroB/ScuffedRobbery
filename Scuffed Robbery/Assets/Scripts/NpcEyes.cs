@@ -105,6 +105,9 @@ public class NpcEyes : MonoBehaviour
             }
         }
     }
+        //How it works
+        //
+        //IF in view
     private void DisableRay()
     {
         isRunningT = false;

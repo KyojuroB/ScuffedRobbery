@@ -8,18 +8,20 @@ public class GameStates : MonoBehaviour
     public bool hasShelveInfo;
     public bool hasDonePipe;
     public bool inRestrictedArea;
+    public bool illegal;
     [SerializeField] List<GameObject> shelves;
     [SerializeField] List<GameObject> pipes;
     public int shelveWithInfoInt;
     public int pipeChosen;
-    List<RestrictedArea> restrictedAreas;
     public bool isDesguised;
     [SerializeField] GameObject desguiseIcon;
     [SerializeField] GameObject desguiseTresspass;
+    [SerializeField] GameObject ilegalUi;
 
     // Start is called before the first frame update
     void Start()
     {
+        ilegalUi.SetActive(false);
         desguiseTresspass.SetActive(false);
         desguiseIcon.SetActive(false);
         // QualitySettings.vSyncCount = 1;
@@ -42,10 +44,21 @@ public class GameStates : MonoBehaviour
     {
 
     }
-    
 
 
- 
+
+    public void Setillegal(bool value)
+    {
+        illegal = value;
+        if (illegal)
+        {
+            ilegalUi.SetActive(true);
+        }
+        else 
+        {
+            ilegalUi.SetActive(false);
+        }
+    }
     public void setRestricted(bool value)
     { 
         inRestrictedArea = value;
