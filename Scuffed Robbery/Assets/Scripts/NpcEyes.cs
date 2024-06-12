@@ -9,12 +9,14 @@ public class NpcEyes : MonoBehaviour
     public LayerMask targetMask;
     public LayerMask obstacleMask;
     public Transform eyePosition;
+    ///The vars for the range and view agle ([;)
     public bool inView = false;
     public bool isRunningT;
   
     [SerializeField] GameObject investigationGroup;
     [SerializeField] GameObject realCamBar;
     [SerializeField] GameObject cameraBar;
+  
     //Ray vars and stuff
     public Transform rayOrigin;
     Transform targetRay;
@@ -61,11 +63,6 @@ public class NpcEyes : MonoBehaviour
                         {
                             gameObject.GetComponent<GuardAi>().isTrackingPlayer = true;
                             ShowRay();
-                            if (targetRay == null || rayOrigin == null)
-                            {
-                                Debug.LogError("Ray Origin or Target is not assigned.");
-                                return;
-                            }
                             if (!isRunningT)
                             {
                                 

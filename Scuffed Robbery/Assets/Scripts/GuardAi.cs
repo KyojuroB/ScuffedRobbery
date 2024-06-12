@@ -51,14 +51,20 @@ public class GuardAi : MonoBehaviour
         {
             agent.ResetPath();
 
-            if (isfollow)
+            if (Vector3.Distance(transform.position, FindObjectOfType<PlayerMovement>().transform.position) < 4)
             {
-                agent.SetDestination(FindObjectOfType<PlayerMovement>().transform.position);
+                 transform.LookAt(FindObjectOfType<PlayerMovement>().transform, Vector3.up);
             }
             else
             {
-                FaceTarget(FindObjectOfType<PlayerMovement>().transform.position);
+                var lookPos = FindObjectOfType<PlayerMovement>().transform.position - transform.position;
+                lookPos.y = 0;
+                var rotation = Quaternion.LookRotation(lookPos);
+                transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime);
             }
+      
+            
+       
              
         }
         if (isTrackingPlayer && (agent.remainingDistance < 1))
