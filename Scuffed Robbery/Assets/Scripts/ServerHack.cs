@@ -19,6 +19,8 @@ public class ServerHack : MonoBehaviour
     bool isFinished = false;
     [SerializeField] int toolIndex;
     [SerializeField] GameObject noToolText;
+    [SerializeField] GameObject FullUSB;
+    [SerializeField] GameObject instPos;
 
     void Start()
     {
@@ -38,6 +40,7 @@ public class ServerHack : MonoBehaviour
                 if (realBar.transform.Find("BarAnim").GetComponent<Image>().fillAmount == 1)
                 {
                     isFinished = true;
+                    Instantiate(FullUSB, instPos.transform.position, Quaternion.identity);
                     Debug.Log("Done");
 
                     if (realBar != null)

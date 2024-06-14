@@ -6,48 +6,94 @@ using UnityEngine.UI;
 
 public class GoldBar : MonoBehaviour
 {
-
-
+    [SerializeField] GameObject canvasObj;
+    [SerializeField] GameObject uiBarPref;
+    GameObject realBar;
     [SerializeField] float maxRange;
-    bool mouseOver = false;
-    bool shaded = false;
-    [SerializeField] GameObject tintObj;
-    [SerializeField] GameObject pickUpText;
-    [SerializeField] GameObject TextPrefab;
-    [SerializeField] Canvas canvasObj;
+    MeshRenderer meshR;
+    bool mouseOver;
+    bool isRunning;
+    bool isFinished = false;
+
     void Start()
     {
-
-        tintObj.SetActive(false);
-        // childText.enabled = false;
+        meshR = GetComponent<MeshRenderer>();
+        meshR.enabled = false;
     }
+
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F) && Vector3.Distance(transform.position, FindObjectOfType<PlayerMovement>().transform.position) < maxRange && mouseOver)
+        if (isRunning)
         {
-            if (FindObjectOfType<Inventory>().IsInventorySpace() == true)
+            if (realBar != null)
             {
-               
-                Destroy(pickUpText);
-                Destroy(gameObject);
+                if (realBar.transform.Find("BarAnim").GetComponent<Image>().fillAmount == 1)
+                {
+                    isFinished = true;
+                    Debug.Log("Done");
+                    
+                    if (realBar != null)
+                    {
+                        Destroy(realBar.gameObject);
+                    }
+                    meshR.enabled = false;
+                    Destroy(gameObject);
+                }
+
             }
 
-
         }
-        if (mouseOver && Vector3.Distance(transform.position, FindObjectOfType<PlayerMovement>().transform.position) < maxRange && !shaded)
+        if (mouseOver && Input.GetKeyDown(KeyCode.E) && !isRunning)
         {
-            tintObj.SetActive(true);
-            pickUpText = Instantiate(TextPrefab);
-            pickUpText.transform.SetParent(canvasObj.transform, false);
-            shaded = true;
+            MouseAction();
         }
-        else if (!mouseOver || Vector3.Distance(transform.position, FindObjectOfType<PlayerMovement>().transform.position) > maxRange)
+
+
+        if (isRunning && !Input.GetKey(KeyCode.E))
+        {
+            Destroy(realBar.gameObject);
+            isRunning = false;
+        }
+
+
+        if (mouseOver && Vector3.Distance(transform.position, FindObjectOfType<PlayerMovement>().transform.position) < maxRange && !isFinished)
+        {
+            meshR.enabled = true;
+        }
+        else
         {
 
-            tintObj.SetActive(false);
-            Destroy(pickUpText);
-            shaded = false;
+            meshR.enabled = false;
+            if (realBar != null)
+            {
+                Destroy(realBar);
+            }
+        }
+    }
+
+    void MouseAction()
+    {
+        isRunning = true;
+        realBar = Instantiate(uiBarPref);
+        realBar.transform.SetParent(canvasObj.transform, false);
+
+
+        Animator barAnimator = realBar.transform.Find("BarAnim").GetComponent<Animator>();
+
+
+        if (barAnimator != null)
+        {
+
+            barAnimator.Play("Bar");
+        }
+        else
+        {
+
+            Debug.LogError("Animator component not found on the UI bar prefab.");
+            Destroy(realBar);
+            isRunning = false;
+            return;
         }
     }
 
@@ -55,10 +101,28 @@ public class GoldBar : MonoBehaviour
     {
         mouseOver = true;
 
+        if (Vector3.Distance(transform.position, FindObjectOfType<PlayerMovement>().transform.position) < maxRange && !isFinished)
+        {
+            meshR.enabled = true;
+        }
     }
 
     private void OnMouseExit()
     {
+        isRunning = false;
         mouseOver = false;
+        meshR.enabled = false;
+        if (realBar != null)
+        {
+
+            Transform barAnimChild = realBar.transform.Find("BarAnim");
+            if (barAnimChild != null)
+            {
+
+                Destroy(barAnimChild.gameObject);
+            }
+
+            Destroy(realBar);
+        }
     }
 }
