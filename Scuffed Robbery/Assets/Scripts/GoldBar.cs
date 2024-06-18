@@ -31,6 +31,8 @@ public class GoldBar : MonoBehaviour
                 if (realBar.transform.Find("BarAnim").GetComponent<Image>().fillAmount == 1)
                 {
                     isFinished = true;
+                    FindObjectOfType<FinishArea>().completeTask(3);
+                    FindObjectOfType<GameStates>().collectGold();
                     Debug.Log("Done");
                     
                     if (realBar != null)

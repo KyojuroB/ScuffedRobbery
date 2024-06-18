@@ -15,9 +15,12 @@ public class PickupAble : MonoBehaviour
     [SerializeField] GameObject pickUpText;
     [SerializeField] GameObject TextPrefab;
     [SerializeField] Canvas canvasObj;
+    [SerializeField] AudioClip pickUpSound;
+   
     void Start()
     {
-       
+
+       canvasObj = FindObjectOfType<Canvas>();
         tintObj.SetActive(false);
        // childText.enabled = false;
     }
@@ -29,6 +32,21 @@ public class PickupAble : MonoBehaviour
             if (FindObjectOfType<Inventory>().IsInventorySpace() == true) 
             {
                 FindObjectOfType<Inventory>().AddToInventory(objIndex);
+                if (objIndex == 7)
+                {
+                    FindObjectOfType<FinishArea>().completeTask(1);
+                }
+                if (objIndex == 2)
+                {
+                    FindObjectOfType<Narrator>().hasCard = true;
+                    FindObjectOfType<Narrator>().CheckForCardAndUni();
+
+                }
+                if (objIndex == 4)
+                {
+                    FindObjectOfType<Narrator>().CreateText("Alright make your way to the basement and find the server, you'll know it when you see it.",7);
+                }
+                AudioSource.PlayClipAtPoint(pickUpSound, transform.position);
                 Destroy(pickUpText);
                 Destroy(gameObject);
             }

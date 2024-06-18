@@ -41,10 +41,13 @@ public class Shelves : MonoBehaviour
             {
                 if (realBar.transform.Find("BarAnim").GetComponent<Image>().fillAmount == 1)
                 {
+                    FindObjectOfType<GameStates>().Setillegal(false);
                     isFinished = true;
                     Debug.Log("Done");
                     if (isInfo)
                     {
+                        FindObjectOfType<Narrator>().CreateText("Nice we just found the Code to the vault But before, find the cable on the vault panel and cut it's color on the roof", 8);
+                        FindObjectOfType<FinishArea>().completeTask(2);
                         FindObjectOfType<GameStates>().hasShelveInfo = true;
                         Debug.Log("InfoOne");
                     }
@@ -61,14 +64,15 @@ public class Shelves : MonoBehaviour
         }
         if (mouseOver && Input.GetKeyDown(KeyCode.E) && !isRunning)
         {
+
             MouseAction();
-            FindObjectOfType<GameStates>().Setillegal(true);
+       
         }
 
   
         if (isRunning && !Input.GetKey(KeyCode.E))
         {
-         
+            FindObjectOfType<GameStates>().Setillegal(false);
             Destroy(realBar.gameObject);
             isRunning = false;
 
@@ -81,7 +85,7 @@ public class Shelves : MonoBehaviour
         }
         else
         {
-            FindObjectOfType<GameStates>().Setillegal(false);
+           
             meshR.materials = mat;
             if (realBar != null)
             {
@@ -95,8 +99,8 @@ public class Shelves : MonoBehaviour
         isRunning = true;
         realBar = Instantiate(uiBarPref);
         realBar.transform.SetParent(canvasObj.transform, false);
-    
 
+        FindObjectOfType<GameStates>().Setillegal(true);
         Animator barAnimator = realBar.transform.Find("BarAnim").GetComponent<Animator>(); 
 
 

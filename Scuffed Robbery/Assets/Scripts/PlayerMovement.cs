@@ -9,20 +9,29 @@ public class PlayerMovement : MonoBehaviour
     public float runningSpeed = 11.5f;
     public float jumpSpeed = 8.0f;
     public float gravity = 20.0f;
-    CharacterController characterController;
-    Vector3 moveDirection = Vector3.zero;
     public float lookSpeed = 2.0f;
     public float lookXLimit = 45.0f;
+    //vars for the ints and stuff
 
-  
-    float rotationX = 0;
+    public AudioClip walkingSound;
+    public AudioClip jumpingSound;
+    //sounds
 
-    [HideInInspector] 
+    private CharacterController characterController;
+    private Vector3 moveDirection = Vector3.zero;
+    private float rotationX = 0;
+    private bool isGrounded;
+   
+    private AudioSource audioSource;
+
+
+    [HideInInspector]
     public bool canMove = true;
 
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+        audioSource = GetComponent<AudioSource>();
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -30,11 +39,10 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
         bool isRunning = Input.GetKey(KeyCode.LeftShift);
-        float curSpeedX = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Vertical") : 0; 
+        float curSpeedX = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Vertical") : 0;
         float curSpeedY = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Horizontal") : 0;
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
@@ -42,22 +50,29 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
         {
             moveDirection.y = jumpSpeed;
+            PlayJumpSound();
         }
         else
         {
             moveDirection.y = movementDirectionY;
         }
 
-
         if (!characterController.isGrounded)
         {
             moveDirection.y -= gravity * Time.deltaTime;
         }
 
-
         characterController.Move(moveDirection * Time.deltaTime);
 
-    
+        if (characterController.isGrounded && (curSpeedX != 0 || curSpeedY != 0))
+        {
+            PlayWalkingSound();
+        }
+        else
+        {
+            audioSource.Stop();
+        }
+
         if (canMove)
         {
             rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
@@ -65,6 +80,21 @@ public class PlayerMovement : MonoBehaviour
             Camera.main.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
         }
+    }
+
+    private void PlayWalkingSound()
+    {
+        if (!audioSource.isPlaying)
+        {
+            audioSource.clip = walkingSound;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
+    }
+
+    private void PlayJumpSound()
+    {
+        audioSource.PlayOneShot(jumpingSound);
     }
 }
 

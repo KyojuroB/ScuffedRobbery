@@ -38,7 +38,10 @@ public class Desguise : MonoBehaviour
                 {
                     isFinished = true;
                     Debug.Log("Done");
+                    FindObjectOfType<GameStates>().Setillegal(false);
                     FindObjectOfType<GameStates>().Desguiseue();
+                    FindObjectOfType<Narrator>().hasuni = true;
+                    FindObjectOfType<Narrator>().CheckForCardAndUni();
                     if (realBar != null)
                     {
                         Destroy(realBar.gameObject);
@@ -60,6 +63,7 @@ public class Desguise : MonoBehaviour
         {
             Destroy(realBar.gameObject);
             isRunning = false;
+            FindObjectOfType<GameStates>().Setillegal(false);
         }
 
 
@@ -84,9 +88,8 @@ public class Desguise : MonoBehaviour
         realBar = Instantiate(uiBarPref);
         realBar.transform.SetParent(canvasObj.transform, false);
 
-
         Animator barAnimator = realBar.transform.Find("BarAnim").GetComponent<Animator>();
-
+        FindObjectOfType<GameStates>().Setillegal(true);
 
         if (barAnimator != null)
         {
@@ -115,6 +118,7 @@ public class Desguise : MonoBehaviour
 
     private void OnMouseExit()
     {
+        FindObjectOfType<GameStates>().Setillegal(false);
         isRunning = false;
         mouseOver = false;
         meshR.materials = mat;

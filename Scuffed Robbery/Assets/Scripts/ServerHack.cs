@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Hardware; 
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,6 +22,7 @@ public class ServerHack : MonoBehaviour
     [SerializeField] GameObject noToolText;
     [SerializeField] GameObject FullUSB;
     [SerializeField] GameObject instPos;
+    [SerializeField] AudioClip insetAudio;
 
     void Start()
     {
@@ -39,6 +41,8 @@ public class ServerHack : MonoBehaviour
             {
                 if (realBar.transform.Find("BarAnim").GetComponent<Image>().fillAmount == 1)
                 {
+                    FindObjectOfType<Narrator>().CreateText("Good, head back up and find where they keep all the files, we might be able to find things out.", 7);
+                    AudioSource.PlayClipAtPoint(insetAudio, transform.position);
                     isFinished = true;
                     Instantiate(FullUSB, instPos.transform.position, Quaternion.identity);
                     Debug.Log("Done");

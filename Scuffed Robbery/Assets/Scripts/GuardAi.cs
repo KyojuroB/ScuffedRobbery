@@ -49,28 +49,33 @@ public class GuardAi : MonoBehaviour
 
         if (isTrackingPlayer)
         {
-            agent.ResetPath();
+         
 
-            if (Vector3.Distance(transform.position, FindObjectOfType<PlayerMovement>().transform.position) < 4)
+            if (Vector3.Distance(transform.position, FindObjectOfType<PlayerMovement>().transform.position) < 3)
             {
-                 transform.LookAt(FindObjectOfType<PlayerMovement>().transform, Vector3.up);
+                agent.ResetPath();
+                FaceTarget(FindObjectOfType<PlayerMovement>().transform.position);
+                
             }
             else
             {
-                var lookPos = FindObjectOfType<PlayerMovement>().transform.position - transform.position;
-                lookPos.y = 0;
-                var rotation = Quaternion.LookRotation(lookPos);
-                transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime);
+                agent.SetDestination(FindObjectOfType<PlayerMovement>().transform.position);
+                if (isTrackingPlayer && (agent.remainingDistance < 3))
+                {
+                    Debug.LogWarning("countdown");
+                    StartCoroutine(Endplayertrack());
+                      
+                } 
             }
-      
-            
-       
-             
+  
         }
-        if (isTrackingPlayer && (agent.remainingDistance < 1))
-        { 
-           // isTrackingPlayer = false;
-        }
+
+    }
+    IEnumerator Endplayertrack()
+    {
+
+        yield return new WaitForSeconds(3.5f);
+        isTrackingPlayer = false;
     }
     private void FaceTarget(Vector3 destination)
     {

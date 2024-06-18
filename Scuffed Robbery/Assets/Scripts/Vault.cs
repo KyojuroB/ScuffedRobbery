@@ -40,14 +40,33 @@ public class Vault : MonoBehaviour
             {
                 if (realBar.transform.Find("BarAnim").GetComponent<Image>().fillAmount == 1)
                 {
-                    FindObjectOfType<Inventory>().RemoveFromInventory(intForTool);
-                   vaultanim.enabled = true;
-                   
-                    isFinished = true;
-                 
-                    Debug.Log("Done");
-                    meshR.materials = mat;
-                    Destroy(this);
+                    //FindObjectOfType<Inventory>().RemoveFromInventory(intForTool);
+                    if (FindObjectOfType<GameStates>().hasDonePipe == true)
+                    {
+                        FindObjectOfType<GameStates>().Setillegal(false);
+                        vaultanim.enabled = true;
+
+                        isFinished = true;
+
+                        Debug.Log("Done");
+                        meshR.materials = mat;
+                        Destroy(this);
+
+                    }
+                    else 
+                    {
+                      
+
+                        isFinished = true;
+                        FindObjectOfType<GameStates>().LoseGame();
+                        Debug.Log("U LOSTTTTTT");
+                        meshR.materials = mat;
+                        Destroy(this);
+
+
+                    }
+                
+
                 }
 
             }
@@ -70,12 +89,14 @@ public class Vault : MonoBehaviour
         }
         if (isRunning && !FindObjectOfType<Inventory>().IsEquiped(intForTool))
         {
+            FindObjectOfType<GameStates>().Setillegal(false);
             Destroy(realBar.gameObject);
             isRunning = false;
         }
         // Check for input to stop the action
         if (isRunning && !Input.GetKey(KeyCode.E))
         {
+            FindObjectOfType<GameStates>().Setillegal(false);
             Destroy(realBar.gameObject);
             isRunning = false;
         }
@@ -87,10 +108,12 @@ public class Vault : MonoBehaviour
         }
         else
         {
+
             // Revert to original material 
             meshR.materials = mat;
             if (realBar != null)
             {
+                FindObjectOfType<GameStates>().Setillegal(false);
                 Destroy(realBar);
             }
         }
@@ -103,6 +126,7 @@ public class Vault : MonoBehaviour
 
     void MouseAction()
     {
+        FindObjectOfType<GameStates>().Setillegal(true);
         isRunning = true;
         realBar = Instantiate(uiBarPref);
         realBar.transform.SetParent(canvasObj.transform, false);
@@ -138,6 +162,7 @@ public class Vault : MonoBehaviour
 
     private void OnMouseExit()
     {
+        FindObjectOfType<GameStates>().Setillegal(false);
         isRunning = false;
         mouseOver = false;
         meshR.materials = mat;

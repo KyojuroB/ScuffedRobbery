@@ -75,6 +75,7 @@ MonoBehaviour:
   pickUpText: {fileID: 0}
   TextPrefab: {fileID: 838055315555221488, guid: 97efada07e31b954b8ec946d6ed3d299, type: 3}
   canvasObj: {fileID: 0}
+  pickUpSound: {fileID: 8300000, guid: 25ad3012b9808c844b5d30237cdfaaf7, type: 3}
 --- !u!54 &8847151276370786843
 Rigidbody:
   m_ObjectHideFlags: 0

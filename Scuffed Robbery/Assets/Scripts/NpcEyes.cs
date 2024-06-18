@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NpcEyes : MonoBehaviour
 {
@@ -9,14 +10,17 @@ public class NpcEyes : MonoBehaviour
     public LayerMask targetMask;
     public LayerMask obstacleMask;
     public Transform eyePosition;
-    ///The vars for the range and view agle ([;)
+    ///The vars for the range and view agle and stuff(note ben make the radius wider for guard)
     public bool inView = false;
     public bool isRunningT;
   
     [SerializeField] GameObject investigationGroup;
     [SerializeField] GameObject realCamBar;
     [SerializeField] GameObject cameraBar;
-  
+
+    public Image realCamBarImage;
+    bool hasLoggedMessage;
+
     //Ray vars and stuff
     public Transform rayOrigin;
     Transform targetRay;
@@ -33,6 +37,12 @@ public class NpcEyes : MonoBehaviour
 
     void Update()
     {
+        if (realCamBarImage != null && realCamBarImage.fillAmount >= 1 && !hasLoggedMessage)
+        {
+            FindObjectOfType<GameStates>().LoseGame();
+            Debug.Log("RealCamBar animation finished.");
+            hasLoggedMessage = true;  // Ensure the message is logged only once
+        }
         FindVisibleTargets();
     }
 
@@ -65,10 +75,17 @@ public class NpcEyes : MonoBehaviour
                             ShowRay();
                             if (!isRunningT)
                             {
-                                
+
                                 investigationGroup.SetActive(true);
                                 realCamBar = Instantiate(cameraBar);
                                 realCamBar.transform.SetParent(investigationGroup.transform, false);
+                                realCamBarImage = realCamBar.transform.GetChild(1).GetComponent<Image>();
+                                if (realCamBarImage == null)
+                                {
+                                    Debug.LogError("RealCamBar does not have an Image component.");
+                                }
+
+                                hasLoggedMessage = false; // Reset the message logged flag
                             }
                             isRunningT = true;
 
@@ -83,9 +100,37 @@ public class NpcEyes : MonoBehaviour
 
                         }
                     }
+                    else if (FindObjectOfType<GameStates>().illegal)
+                    {
+                        gameObject.GetComponent<GuardAi>().isTrackingPlayer = true;
+                        ShowRay();
+                        if (!isRunningT)
+                        {
+
+                            investigationGroup.SetActive(true);
+                            realCamBar = Instantiate(cameraBar);
+                            realCamBar.transform.SetParent(investigationGroup.transform, false);
+                            realCamBarImage = realCamBar.transform.GetChild(1).GetComponent<Image>();
+                            if (realCamBarImage == null)
+                            {
+                                Debug.LogError("RealCamBar does not have an Image component.");
+                            }
+
+                            hasLoggedMessage = false; // Reset the message logged flag
+                        }
+                        isRunningT = true;
+
+                        Vector3 direction = (targetRay.position - rayOrigin.position).normalized;
+
+
+                        Vector3 endPosition = targetRay.position;
+
+                        lineRenderer.SetPosition(0, rayOrigin.position);
+                        lineRenderer.SetPosition(1, endPosition);
+                    }
                     else
-                    {                                     
-                       DisableRay();                       
+                    {
+                        DisableRay();
                     }
                     //Crime Noticedd idk do it late ig
                 }
