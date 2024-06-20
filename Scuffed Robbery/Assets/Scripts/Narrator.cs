@@ -49,10 +49,10 @@ public class Narrator : MonoBehaviour
         yield return new WaitForSeconds(5);
         CreateText("Were breaking into the vault, stealing gold.", 5);
         yield return new WaitForSeconds(5);
-        CreateText("This placed has cameras and guards everywhere so be careful", 4);
+        CreateText("This placed has cameras and guards everywhere so be careful.", 4);
         yield return new WaitForSeconds(4);
-        CreateText("We had someone leave a keycard and uniform", 4);
+        CreateText("We had someone leave a keycard and uniform,", 4);
         yield return new WaitForSeconds(4);
-        CreateText("Should be in one of the locker rooms, go find them.", 6);
+        CreateText("Should be in one of the bathrooms, go find them.", 6);
     }
 }

@@ -88,6 +88,10 @@ public class FinishArea : MonoBehaviour
             
             tasksText[taskListIndex].color = Color.green;
             isTaskComlete[taskListIndex] = true;
+            if (taskListIndex == 3)
+            {
+                FindObjectOfType<Narrator>().CreateText("You need to get out of the Bank through the back so no one notices!", 8);
+            }
 
         }
     }

@@ -45,7 +45,7 @@ public class Pipes : MonoBehaviour
                     isFinished = true;
                     if (isRightOne)
                     {
-                        FindObjectOfType<Narrator>().CreateText("Nice Open That Vault", 4);
+                        FindObjectOfType<Narrator>().CreateText("Nice, GET THE VAULT KEYCARD IN ONE OF THE OFFICES AND OPEN THE VAULT", 6);
                         FindObjectOfType<GameStates>().hasDonePipe = true;
                         Debug.Log("Done");
                     }

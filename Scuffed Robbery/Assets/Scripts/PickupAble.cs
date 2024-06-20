@@ -44,7 +44,7 @@ public class PickupAble : MonoBehaviour
                 }
                 if (objIndex == 4)
                 {
-                    FindObjectOfType<Narrator>().CreateText("Alright make your way to the basement and find the server, you'll know it when you see it.",7);
+                    FindObjectOfType<Narrator>().CreateText("Go Find some wire clippers and kill the NAS system for the cams on the third floor",7);
                 }
                 AudioSource.PlayClipAtPoint(pickUpSound, transform.position);
                 Destroy(pickUpText);

@@ -42,7 +42,7 @@ public class CamHackNas : MonoBehaviour
                     for (int i = 0; i < FindObjectsOfType<SecurityCam>().Count(); i++)
                     {
                         FindObjectsOfType<SecurityCam>()[i].gameObject.GetComponent<SecurityCam>().enabled = false;
-
+                        FindObjectOfType<Narrator>().CreateText("Alright make your way to the basement and find the server, you'll know it when you see it.", 7);
                     }
                     FindObjectOfType<FinishArea>().completeTask(0);
                     isFinished = true;
